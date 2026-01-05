@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<Document ProgramVersion="15.3.4.55092" Generator="GrandSmeta" DocumentType="{2B0470FD-477C-4359-9F34-EEBE36B7D340}" MaxSysID="6">
+  <Properties LocNum="Локальный номер" Object="Наименование объекта" Constr="Наименование стройки" Description="Наименование работ"/>
+  <GsDocSignatures>
+    <Item Caption="Основание" ID="100"/>
+    <Item Caption="Составил" ID="300" Value="Составил">
+      <Attributes>
+        <Item Caption="Должность" ID="970"/>
+      </Attributes>
+    </Item>
+    <Item Caption="Проверил" ID="310" Value="Проверил">
+      <Attributes>
+        <Item Caption="Должность" ID="970"/>
+      </Attributes>
+    </Item>
+  </GsDocSignatures>
+  <DocDates Options="CurrFmtQr"/>
+  <RegionalK Options="Percent Base"/>
+  <TerZoneK Caption="Территориальная поправка к базе 2001г" Options="Base PzAll EmAll"/>
+  <WinterCatalog WinterMode="None" WinterLinkMode="Table">
+    <CommonWinterK/>
+  </WinterCatalog>
+  <RegionInfo RegionName="ГЭСН-2020, ФЕР-2020 (с Изм. 1-9) с КСР по приказу №969/пр от 17.11.2022" RegionID="8010" Zone84Name="Базовый территориальный район" Zone84ID="1" Zone01Name="Базовый федеральный район" Zone01ID="1"/>
+  <FRSN_Info BaseType="GSN" BaseName="Приказ Минстроя России от 26.12.2019 № 876/пр; Приказ Минстроя России от 04.08.2020 № 421/пр; Приказ Минстроя России от 21.12.2020 № 812/пр; Приказ Минстроя России от 11.12.2020 № 774/пр" RegNumber="394" RegDate="21.12.2021" OrderDetails="Приказ Минстроя России от 30 марта 2020 г. № 172/пр, Приказ Минстроя России от 01 июня 2020 г. № 294/пр, Приказ Минстроя России от 30 июня 2020 г. № 352/пр, Приказ Минстроя России от 20 октября 2020 г. № 636/пр, Приказ Минстроя России от 09 февраля 2021 г. № 51/пр, Приказ Минстроя России от 24  мая  2021 г. № 321/пр, Приказ Минстроя России от 24 июня  2021 г. № 408/пр, Приказ Минстроя России от 14 октября  2021 г. № 746/пр, Приказ Минстроя России от 20 декабря  2021 г. № 962/пр; Приказ Минстроя России от 07.07.2022 № 557/пр; Приказ Минстроя России от 02.09.2021 № 636/пр, Приказ Минстроя России от 26.07.2022 № 611/пр; Приказ Минстроя России от 22.04.2022 № 317/пр">
+    <Wage_Info BaseType="GSN" OrderDetails="реквизиты приказа"/>
+    <Overhd_Info BaseType="GSN" BaseName="Методика по разработке и применению нормативов накладных расходов при определении сметной стоимости строительства, реконструкции, капитального ремонта, сноса объектов капитального строительства. Утверждена приказом Минстроя России от 21 декабря 2020 г. № 812/пр. Внесены изменения приказом Минстроя России от 02.09.2021 г. № 636/пр. Внесены изменения приказом Минстроя России от 26.07.2022 г. № 611/пр." RegNumber="377" RegDate="16.04.2021" OrderDetails="Приказы Минстроя России № 812/пр от 21.12.2020, № 636/пр от 02.09.2021, № 611/пр от 26.07.2022"/>
+    <Profit_Info BaseType="GSN" BaseName="Методика по разработке и применению нормативов сметной прибыли при определении сметной стоимости строительства, реконструкции, капитального ремонта, сноса объектов капитального строительства. Утверждена приказом Минстроя России от 11 декабря 2020 г. № 774/пр. Внесены изменения приказом Минстроя России от 22.04.2022 г. № 317/пр." RegNumber="376" RegDate="16.04.2021" OrderDetails="Приказы Минстроя России № 774/пр от 11.12.2020, № 317/пр от 22.04.2022"/>
+  </FRSN_Info>
+  <Parameters Options="AddZatr 2020Mode SeparateFot AutoIndexes AutoIndexUseCode MultPosK 2022Mode 2020NoRound" Mode2020Order="2024" BasePrices="2001" BaseCalcVrs="Vr2001" TzDigits="2" BlockRoundMode="Smart" MultKPosCalcMode="UseTotalMult" TempZone="1" TsnTempZone="1" MatDigits="4" MatRoundMode="None" PosKDigits="7" ItogOptions="SeparateVrs IgnoreZeroQty IgnoreZeroPrice" FirstItogItem="K" ItogExpandTo="Default" PropsConfigName="РП. БИМ по статьям затрат попозиционный(Методики 421(в ред.557 и 55), 812(в ред.636 и 611), 774(в ред.317))">
+    <CommonNK ActiveItems="Vk Ck Mk"/>
+    <CommonPK ActiveItems="Vk Ck Mk"/>
+  </Parameters>
+  <Indexes IndexesMode="PosOne" IndexesLinkMode="Category">
+    <IndexesPos>
+      <Index Caption="Индекс" Code="2" OZ="30" EM="10" ZM="12" MT="15"/>
+    </IndexesPos>
+    <CommonIndexR Caption="тендерный" Formula="22" Options="Disabled"/>
+    <CommonIndexB20 Caption="тендерный" Formula="22" Options="Disabled"/>
+  </Indexes>
+  <AddZatrats>
+    <AddZatrGlava Glava="8"/>
+    <AddZatrGlava Glava="9"/>
+    <AddZatrGlava Glava="10"/>
+    <AddZatrGlava Glava="11"/>
+    <AddZatrGlava Glava="12"/>
+    <AddZatrGlava Glava="13"/>
+    <AddZatrGlava Glava="14"/>
+    <AddZatrGlava Glava="15"/>
+  </AddZatrats>
+  <OsInfo OSChapter="1" LinkType="LB">
+    <CCChapter Cons="2" Rec="2" Road="2"/>
+  </OsInfo>
+  <CennikAutoLoad Enabled="False" MatchFields="Code" Fields="PriceBase PriceCurr" Groups="Tzr Tzm Mch Mat" SubGroups="Standart Positions" Options="IgnoreCodePrefix" PriceTypes="PriceBase PriceCurr">
+    <DocLink/>
+  </CennikAutoLoad>
+  <VidRab_Catalog>
+    <Vids_Rab Type="Виды работ 2001г" CatFile="ВР Методика 2020 и 636 и 317 и 611" KfsFiles="КНРСП МЕТОДИКА 2020 И 636 И 317 И 611 РЕМОНТ НЕЖИЛЫХ">
+      <VidRab_Group Caption="Общестроительные работы" ID="0">
+        <Vid_Rab Caption="Земляные работы, выполняемые механизированным способом" ID="10001" Category="Construction" NrCode="Пр/812-001.1-1" SpCode="Пр/774-001.1" Nacl="92" Plan="46" NaclCurr="92" PlanCurr="46" NaclMask="ФОТ" PlanMask="ФОТ" SpKfsCode="Приказ № 774/пр от 11.12.2020 п.16" PNB="0.85" PKI="0.85" PKR="0.85"/>
+      </VidRab_Group>
+      <VidRab_Group Caption="Монтажные работы" ID="10003">
+        <Vid_Rab Caption="Электротехнические установки на других объектах" ID="10060" OsColumn="М" Category="Mounting" NrCode="Пр/812-049.3-1" SpCode="Пр/774-049.3" Nacl="97" Plan="51" NaclCurr="97" PlanCurr="51" NaclMask="ФОТ" PlanMask="ФОТ"/>
+      </VidRab_Group>
+    </Vids_Rab>
+    <Vids_Rab Type="Виды работ 1984г"/>
+  </VidRab_Catalog>
+  <Chapters>
+    <Chapter Caption="Новый раздел" SysID="1">
+      <Position Caption="Разработка грунта в отвал экскаваторами /драглайн/ одноковшовыми электрическими шагающими при работе на гидроэнергетическом строительстве с ковшом вместимостью: 15 м3, группа грунтов 1" SysID="4" Number="1" Code="ФЕР01-01-001-01" Units="1000 м3" PriceLevel="2001" DBComment="Приказ Минстроя России от 26.12.2019 №876/пр" Quantity="1" IndexCode="2" PzSync="Yes" Vr2001="10001">
+        <Quantity Fx="1" Result="1"/>
+        <PriceBase PZ="2968,03" OZ="14,48" EM="2953,55" ZM="87,84"/>
+        <Resources>
+          <Tzr Caption="Затраты труда рабочих (средний разряд работы 3,8)" Code="1-3-8" Units="чел.-ч" Quantity="1,54" WorkClass="3,8">
+            <PriceBase Value="9,4"/>
+          </Tzr>
+          <Tzm Caption="Затраты труда машинистов" Code="2" Units="чел.-ч" Quantity="6,4"/>
+          <Mch Caption="Бульдозеры, мощность 79 кВт (108 л.с.)" Code="91.01.01-035" Units="маш.-ч" Quantity="1,6">
+            <PriceBase Value="79,07" ZM="13,5"/>
+          </Mch>
+          <Mch Caption="Экскаваторы одноковшовые электрические шагающие с рабочим оборудованием /драглайн/ емкостью 15 м3" Code="91.01.05-128" Units="маш.-ч" Quantity="1,6">
+            <PriceBase Value="1766,9" ZM="41,4"/>
+          </Mch>
+        </Resources>
+<Koefficients>
+          <K Caption="Производство работ осуществляется в помещениях и иных ограниченных пространствах высотой до 1,8 м" Code="421/пр_2020_прил.10_т.1_п.7_гр.3" Options="Base Curr EmAll MatQty EmQty OzpTz ZpmTz AddOn10" Value_OZ="1,35" Value_EM="1,35" Level="1"/>
+        </Koefficients>					  
+        <WorksList>
+          <Work Caption="Разработка грунта навымет."/>
+          <Work Caption="Устройство и содержание водоотводных канав или ограждающих валиков."/>
+          <Work Caption="Вспомогательные работы, связанные с перемещением экскаватора из забоя в забой."/>
+        </WorksList>
+      </Position>
+      <Position Caption="Установка электрической машины со щитовыми подшипниками, поступающей в собранном виде, на салазках, раме или металлической плите, масса: до 0,1 т" SysID="5" Number="2" Code="ФЕРм08-03-481-02" Units="шт" PriceLevel="2001" DBComment="Приказ Минстроя России от 26.12.2019 №876/пр" Quantity="2" IndexCode="2" PzSync="Yes" Vr2001="10060">
+        <Quantity Fx="2" Result="2"/>
+        <PriceBase PZ="166,56" OZ="51,09" EM="111,71" ZM="10,07" MT="3,76"/>
+        <Resources>
+          <Tzr Caption="Затраты труда рабочих (средний разряд работы 4,2)" Code="1-4-2" Units="чел.-ч" Quantity="5,15" WorkClass="4,2">
+            <PriceBase Value="9,92"/>
+          </Tzr>
+          <Tzm Caption="Затраты труда машинистов" Code="2" Units="чел.-ч" Quantity="0,74"/>
+          <Mch Caption="Краны мостовые электрические, грузоподъемность 50 т" Code="91.05.04-010" Units="маш.-ч" Quantity="0,42">
+            <PriceBase Value="197,01" ZM="14,4"/>
+          </Mch>
+          <Mch Caption="Краны на автомобильном ходу, грузоподъемность 16 т" Code="91.05.05-015" Units="маш.-ч" Quantity="0,16">
+            <PriceBase Value="115,4" ZM="13,5"/>
+          </Mch>
+          <Mch Caption="Автомобили бортовые, грузоподъемность до 5 т" Code="91.14.02-001" Units="маш.-ч" Quantity="0,16">
+            <PriceBase Value="65,71" ZM="11,6"/>
+          </Mch>
+          <Mat Caption="Доска необрезная, хвойных пород, длина 4-6,5 м, все ширины, толщина 44 мм и более, сорт III" Code="11.1.03.05-0085" Units="м3" Quantity="0,004">
+            <PriceBase Value="684"/>
+          </Mat>
+          <Mat Caption="Вспомогательные ненормируемые ресурсы (2% от Оплаты труда рабочих)" Code="999-9950" Units="руб" Quantity="1,02">
+            <PriceBase Value="1"/>
+          </Mat>
+        </Resources>
+        <WorksList>
+          <Work Caption="Подготовка к установке."/>
+          <Work Caption="Установка."/>
+        </WorksList>
+      </Position>
+      <Position Caption="Разработка грунта с погрузкой в автомобили-самосвалы экскаваторами импортного производства с ковшом вместимостью 0,5 (0,5-0,63) м3, группа грунтов: 2 (оставшийся грунт)" SysID="6" Number="3" Code="ФЕР01-01-013-32" Units="1000 м3" PriceLevel="2001" DBComment="Приказ Минстроя России от 26.12.2019 №876/пр" Quantity="0,129" IndexCode="2" PzSync="Yes" Vr2001="10001">
+        <Quantity Fx="0,129" Result="0,129"/>
+        <PriceBase PZ="4233,61" OZ="80,65" EM="4139,95" ZM="394,34" MT="13,01"/>
+        <Resources>
+          <Tzr Caption="Затраты труда рабочих (средний разряд работы 2,0)" Code="1-2-0" Units="чел.-ч" Quantity="10,34" WorkClass="2">
+            <PriceBase Value="7,8"/>
+          </Tzr>
+          <Tzm Caption="Затраты труда машинистов" Code="2" Units="чел.-ч" Quantity="29,21"/>
+          <Mch Caption="Бульдозеры, мощность 79 кВт (108 л.с.)" Code="91.01.01-035" Units="маш.-ч" Quantity="7,29">
+            <PriceBase Value="79,07" ZM="13,5"/>
+          </Mch>
+          <Mch Caption="Экскаваторы на гусеничном ходу импортного производства, емкость ковша 0,5 м3" Code="91.01.05-064" Units="маш.-ч" Quantity="21,92">
+            <PriceBase Value="162,57" ZM="13,5"/>
+          </Mch>
+          <Mat Caption="Щебень М 800, фракция 20-40 мм, группа 2" Code="02.2.05.04-1777" Units="м3" Quantity="0,12">
+            <PriceBase Value="108,4"/>
+          </Mat>
+        </Resources>
+        <WorksList>
+          <Work Caption="Разработка грунта экскаваторами с погрузкой на автомобили-самосвалы."/>
+          <Work Caption="Планировка поверхности забоя и земляного полотна забойной дороги бульдозером."/>
+          <Work Caption="Содержание забойной дороги."/>
+          <Work Caption="Вспомогательные работы, выполняемые вручную, связанные с устройством водоотводных канав или ограждающих валиков, с переходом экскаватора с одного места работы на другое и из забоя в забой и т.д."/>
+        </WorksList>
+      </Position>
+    </Chapter>
+  </Chapters>
+  <ReportOptions Options="Grouping SeparateZakPodr" Kk="1" RangingGroups="Mch Mat">
+    <RangingRates Mch="20" Mat="20"/>
+  </ReportOptions>
+</Document>
