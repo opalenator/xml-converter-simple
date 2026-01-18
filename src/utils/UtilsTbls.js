@@ -19,7 +19,7 @@ const GetAttribute=(xelement,label,defval)=>{
         }
             
     }catch(e){
-       console.log(e)
+      // console.log(e)
     }
      return defval
 }
