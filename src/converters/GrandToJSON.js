@@ -173,12 +173,15 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
         MtsnZpmPB:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@PB"),
         MtsnZpmNC:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@NC"),
         MtsnZpmPC:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@PC"),
+        AddOnNumber:GetXMLNodeContent(root,"FRSN_Info/@AddOnNumber"),
         chapter:((chapters)=>{
                 if (chapters) return chapters.map(chapter=>({
                         Caption:GetXMLNodeContent(chapter,"/@Caption"),
                         position:((positions)=>{                                
                                 if (positions) return positions.map(position=>({
-                                        Caption:GetXMLNodeContent(position,"/@Caption"),
+                                        Caption:position.nodeName==='Position'?GetXMLNodeContent(position,"/@Caption"):undefined,
+                                        Header:position.nodeName==='Header'?GetXMLNodeContent(position,"/@Caption"):undefined,
+                                        Comment:position.nodeName==='Comment'?GetXMLNodeContent(position,"/@Caption"):undefined,
                                         Number:GetXMLNodeContent(position,"/@Number"),
                                         Code:GetXMLNodeContent(position,"/@Code"),
                                         Units:GetXMLNodeContent(position,"/@Units"),
@@ -283,9 +286,10 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
                                                         Caption:GetXMLNodeContent(item,"/@Caption"),
                                                         Code:GetXMLNodeContent(item,"/@Code"),
                                                         Units:GetXMLNodeContent(item,"/@Units"),
-                                                        Quantity:GetXMLNodeContent(item,"/@Quantity"),
+                                                        Quantity:GetXMLNodeContent(item,"/@Quantity",GetXMLNodeContent(item,"/@FixedTotQty")),
                                                         WorkClass:GetXMLNodeContent(item,"/@WorkClass"),
-                                                        Mass:GetXMLNodeContent(item,"/@Mass"),    
+                                                        Mass:GetXMLNodeContent(item,"/@Mass"),  
+                                                        Category:GetXMLNodeContent(item,"/@Category"),    
                                                         ...(Price=>({
                                                                 PriceBaseValue:GetXMLNodeContent(Price,"/@Value"),
                                                                 PriceBaseZM:GetXMLNodeContent(Price,"/@ZM") 
@@ -321,7 +325,7 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
                                 })
                                                 )                 
                                         }
-                                )(GetXMLNodes(chapter,"Position").filter(item=>{
+                                )(GetXMLNodes(chapter,"Position,Header,Comment").filter(item=>{
                  
                 if (GetXMLNodeContent(item,"/@Options",'').includes("Inactive")==true){
                     if (GetXMLNodeContent(item,"/@SlaveRow",'').includes("Yes")==false) inactive=true

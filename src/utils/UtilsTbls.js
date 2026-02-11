@@ -36,7 +36,10 @@ const GetXMLNodes=(xml, path)=>{
                 const children=[]
                 const itms=itm.childNodes
                 for (var i = 0; i < itms.length; i++) {
-                    if (itms[i]['nodeName']==item) children.push(itms[i])
+                    const splititem= item.split(',')
+                    for (var k = 0; k < splititem.length; k++) {
+                        if (itms[i]['nodeName']==String(splititem[k]).trim()) children.push(itms[i])
+                    }
                 }
                 result=[...children]
             }
