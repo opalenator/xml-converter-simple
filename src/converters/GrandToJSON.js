@@ -332,7 +332,7 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
 
                     return false
                 }
-                if ((inactive==true)&& GetXMLNodeContent(item,"/@SlaveRow").includes("Yes")){
+                if ((inactive==true)&& GetXMLNodeContent(item,"/@SlaveRow",'').includes("Yes")){
                     return false
                 }else{
                     inactive=false
