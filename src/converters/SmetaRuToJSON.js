@@ -1,9 +1,10 @@
 const {GetXMLNodeContent, GetXMLNodes} = require('../utils/UtilsTbls');
 const {region_enum} = require('./Dictionary');
-const GrandToJSON =  (xml, filename=undefined)=>{
+const SmetaRuToJSON =  (xml, filename=undefined)=>{
     let result = {smeta:{},vr:[],index:[]}
     const root=xml.getElementsByTagName("Document")[0]
-let inactive=false //Переменная для фильтрации исключённых из расчёта позиций
+    const smetaid= GetXMLNodeContent(root,"Object/ObjStructElems/ObjStructElemLS/@ID")
+/* let inactive=false //Переменная для фильтрации исключённых из расчёта позиций
    result.vr=GetXMLNodes(root,"VidRab_Catalog/Vids_Rab").flatMap(item=>(
         GetXMLNodes(item,"VidRab_Group").flatMap(item=>(GetXMLNodes(item,"Vid_Rab").map(itm=>({
                 Grop_Caption:GetXMLNodeContent(item,"/@Caption"),
@@ -76,110 +77,66 @@ let inactive=false //Переменная для фильтрации исклю
                 SMR:GetXMLNodeContent(ind,"/@SMR")
         })),
 ]
-const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
+const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')*/
    result.smeta={
         FileName:filename,
-        Generator:(GetXMLNodeContent(root,"/@Generator")=='GrandSmeta')?'ГРАНД-Смета':GetXMLNodeContent(root,"/@Generator"),
-        ProgramVersion:(GetXMLNodeContent(root,"/@Generator")=='GrandSmeta')?(pv=>{
-            const args =pv.split(".")
-            if (args.length>1) return `'20${String(Number(args[0])+10)}.${args[1]}.${args[2]}`
-            return pv
-        })(GetXMLNodeContent(root,"/@ProgramVersion")):GetXMLNodeContent(root,"/@Generator"),
-        LocNum:GetXMLNodeContent(root,"Properties/@LocNum"),
-        Constr:GetXMLNodeContent(root,"Properties/@Constr"),
-        Object:GetXMLNodeContent(root,"Properties/@Object"),
-        Description:GetXMLNodeContent(root,"Properties/@Description"),
-        RegionName:GetXMLNodeContent(root,"RegionInfo/@RegionName"),
-        RegionID:GetXMLNodeContent(root,"RegionInfo/@RegionID"),
-        Zone01Name:GetXMLNodeContent(root,"RegionInfo/@Zone01Name"),
-        Zone01ID:GetXMLNodeContent(root,"RegionInfo/@Zone01ID"),
-        AdmRegionZone:GetXMLNodeContent(root,"RegionInfo/@AdmRegionZone"),
-        AdmRegionCode:GetXMLNodeContent(root,"RegionInfo/@AdmRegionCode"),
-        Overhd_BaseName:GetXMLNodeContent(root,"FRSN_Info/Overhd_Info/@BaseName"),
-        Overhd_RegNumber:GetXMLNodeContent(root,"FRSN_Info/Overhd_Info/@RegNumber"),
-        Overhd_RegDate:GetXMLNodeContent(root,"FRSN_Info/Overhd_Info/@RegDate"),
-        Overhd_OrderDetails:GetXMLNodeContent(root,"FRSN_Info/Overhd_Info/@OrderDetails"),
-        Profit_BaseName:GetXMLNodeContent(root,"FRSN_Info/Profit_Info/@BaseName"),
-        Profit_RegNumber:GetXMLNodeContent(root,"FRSN_Info/Profit_Info/@RegNumber"),
-        Profit_RegDate:GetXMLNodeContent(root,"FRSN_Info/Profit_Info/@RegDate"),
-        Profit_OrderDetails:GetXMLNodeContent(root,"FRSN_Info/Profit_Info/@OrderDetails"),
-        ...(Vids_Rab=>({
-                CatFile:GetXMLNodeContent(Vids_Rab,"/@CatFile"),
-                NrspFile:GetXMLNodeContent(Vids_Rab,"/@NrspFile"),
-                KfsFiles:GetXMLNodeContent(Vids_Rab,"/@KfsFiles")}))
-                (GetXMLNodes(root,'VidRab_Catalog/Vids_Rab').filter((item) =>(GetXMLNodeContent(item,'/@Type')=='Виды работ 2001г'))[0]),
-        ...(Indexes=>({...(GetXMLNodeContent(root,"OsInfo/@LinkType")==="RS")?{
-                CommonIndexRCaption:GetXMLNodeContent(Indexes,"CommonIndexR/@Caption"),
-                CommonIndexROptions:GetXMLNodeContent(Indexes,"CommonIndexR/@Options"),
-                CommonIndexRFormula:GetXMLNodeContent(Indexes,"CommonIndexR/@Formula")
-         }:{
-                CommonIndexRCaption:GetXMLNodeContent(Indexes,"CommonIndexB20/@Caption"),
-                CommonIndexROptions:GetXMLNodeContent(Indexes,"CommonIndexB20/@Options"),
-                CommonIndexRFormula:GetXMLNodeContent(Indexes,"CommonIndexB20/@Formula")
-         },
-         IndexesMode:GetXMLNodeContent(Indexes,"/@IndexesMode"),
-         IndexesLinkMode:GetXMLNodeContent(Indexes,"/@IndexesLinkMode")
-        }
-        ))(GetXMLNodes(root,'Indexes')[0]),
-        ApprovalDate:GetXMLNodeContent(root,"DocDates/@ApprovalDate"),
-        CreationDate:GetXMLNodeContent(root,"DocDates/@СreationDate"),
-        ...Object.assign({},...GetXMLNodes(root,"GsDocSignatures/Item").map(itm=>
-                (GetXMLNodeContent(itm,"/@Caption")==='Основание')?{['Reason']:GetXMLNodeContent(itm,"/@Value")}
-                :(GetXMLNodeContent(itm,"/@Caption")==='Составил')?{['ComposeFIO']:GetXMLNodeContent(itm,"/@Value")}
-                :(GetXMLNodeContent(itm,"/@Caption")==='Проверил')?{['VerifyFIO']:GetXMLNodeContent(itm,"/@Value")}
-                :null)
-        ),
-        RegNumber:GetXMLNodeContent(root,"FRSN_Info/@RegNumber"),
-        RegDate:GetXMLNodeContent(root,"FRSN_Info/@RegDate"),
-        OrderDetails:GetXMLNodeContent(root,"FRSN_Info/@OrderDetails"),
-        BaseName:GetXMLNodeContent(root,"FRSN_Info/@BaseName"),
-        BaseType:GetXMLNodeContent(root,"FRSN_Info/@BaseType"),
-        Index_Info_OrderDetails:GetXMLNodeContent(root,"FRSN_Info/Index_Info/@OrderDetails"),
-        Wage_Info_OrderDetails:GetXMLNodeContent(root,"FRSN_Info/Wage_Info/@OrderDetails"),
-        Index_Info_BaseType:GetXMLNodeContent(root,"FRSN_Info/Index_Info/@BaseType"),
-        Wage_Info_BaseType:GetXMLNodeContent(root,"FRSN_Info/Wage_Info/@BaseType"),
-        Overhd_BaseType:GetXMLNodeContent(root,"FRSN_Info/Overhd_Info/@BaseType"),
-        Profit_BaseType:GetXMLNodeContent(root,"FRSN_Info/Profit_Info/@BaseType"),
-        AdmRegionName:(region_name=>(region_name?region_name.Name:undefined))(region_enum.find(item=> (String(item.Code)=== GetXMLNodeContent(root,"RegionInfo/@AdmRegionCode")))),
-        CurrPriceDate:GetXMLNodeContent(root,"DocDates/@CurrPriceDate"),
-        BasePriceDate:GetXMLNodeContent(root,"DocDates/@BasePriceDate"),
-        DocDatesOptions:GetXMLNodeContent(root,"DocDates/@Options"),
-        Options:GetXMLNodeContent(root,"Parameters/@Options"),
-        Mode2020Order:GetXMLNodeContent(root,"Parameters/@Mode2020Order"),
-        BasePrices:GetXMLNodeContent(root,"Parameters/@BasePrices"),
-        BaseCalcVrs:GetXMLNodeContent(root,"Parameters/@BaseCalcVrs"),
-        TzDigits:GetXMLNodeContent(root,"Parameters/@TzDigits"),
-        BlockRoundMode:GetXMLNodeContent(root,"Parameters/@BlockRoundMode"),
-        MultKPosCalcMode:GetXMLNodeContent(root,"Parameters/@MultKPosCalcMode"),
-        TempZone:GetXMLNodeContent(root,"Parameters/@TempZone"),
-        TsnTempZone:GetXMLNodeContent(root,"Parameters/@TsnTempZone"),
-        MatDigits:GetXMLNodeContent(root,"Parameters/@MatDigits"),
-        MatRoundMode:GetXMLNodeContent(root,"Parameters/@MatRoundMode"),
-        PosKDigits:GetXMLNodeContent(root,"Parameters/@PosKDigits"),
-        ItogOptions:GetXMLNodeContent(root,"Parameters/@ItogOptions"),
-        FirstItogItem:GetXMLNodeContent(root,"Parameters/@FirstItogItem"),
-        ItogExpandTo:GetXMLNodeContent(root,"Parameters/@ItogExpandTo"),
-        PropsConfigName:GetXMLNodeContent(root,"Parameters/@PropsConfigName"),
-        PropsConfigNameModified:GetXMLNodeContent(root,"Parameters/@PropsConfigNameModified"),
-        Numbering_Mode:GetXMLNodeContent(root,"Parameters/Numbering/@Mode"),
-        Numbering_Options:GetXMLNodeContent(root,"Parameters/Numbering/@Options"),
-        OSChapter:GetXMLNodeContent(root,"OsInfo/@OSChapter"),
-        LinkType:GetXMLNodeContent(root,"OsInfo/@LinkType"),
-        Industrial:GetXMLNodeContent(root,"OsInfo/@Industrial"),
-        Cons:GetXMLNodeContent(root,"OsInfo/CCChapter/@Cons"),
-        Rec:GetXMLNodeContent(root,"OsInfo/CCChapter/@Cons"),
-        Road:GetXMLNodeContent(root,"OsInfo/CCChapter/@Cons"),
-        MtsnZpmNB:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@NB"),
-        MtsnZpmPB:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@PB"),
-        MtsnZpmNC:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@NC"),
-        MtsnZpmPC:GetXMLNodeContent(root,"Parameters/MtsnNPZpm/@PC"),
-        AddOnNumber:GetXMLNodeContent(root,"FRSN_Info/@AddOnNumber"),
-        SmetaTotal:GetXMLNodeContent(root,"Itog/ItogRes/Itog/@PZ"),
-        chapter:((chapters)=>{
-                if (chapters) return chapters.map(chapter=>({
-                        Caption:GetXMLNodeContent(chapter,"/@Caption"),
-                        ChapterTotal:GetXMLNodeContent(chapter,"Itog/ItogRes/Itog/@PZ"),
-                        position:((positions)=>{                                
+        Generator:GetXMLNodeContent(root,"/@Generator"),
+        ProgramVersion:GetXMLNodeContent(root,"/@Version"),
+        LocNum:GetXMLNodeContent(root,"Object/ObjStructElems/ObjStructElemLS/@SHIFR"),
+        Constr:GetXMLNodeContent(root,"Object/Obj_Params/Obj_Names/NAME_STROYKI"),
+        Object:GetXMLNodeContent(root,"Object/@FullName"),
+        Options: 'NoFormuls',
+        Description:GetXMLNodeContent(root,"Object/ObjStructElems/ObjStructElemLS/@FULLNAME"),
+        AddOnNumber:(str=>{
+                if (!str) return null
+                const match = str.match(/Доп\s*(\d+)/i);
+                return match ? match[1] : null;
+        })(GetXMLNodeContent(root,"Object/Obj_Params/TR/Name")),
+
+        SmetaTotal:((smeta)=>{
+              if (!smeta) return null
+              let result=null
+              const itog=GetXMLNodes(smeta,"Itogs/StandartItog").find(item=>(GetXMLNodeContent(item,"/@AVAR")==="Всего"))
+              if (!itog) return null
+              GetXMLNodes(itog,"CostLevel_Itog").forEach(item=>(result=GetXMLNodeContent(item,"ITOG")))
+              return result
+        })(GetXMLNodes(root,"Object/StructElems/StructElemLS")[0]),
+        chapter:((objchapters,chapters)=>{
+              if (objchapters){
+                 return objchapters.map((objchapter,ind)=>({
+                        Caption:GetXMLNodeContent(objchapter,"/@FULLNAME"),
+                        ChapterTotal:((chapter)=>{
+                           let result=null
+                           const itog=GetXMLNodes(chapter,"Itogs/StandartItog").find(item=>(GetXMLNodeContent(item,"/@AVAR")==="Всего"))
+                           if (!itog) return null
+                           GetXMLNodes(itog,"CostLevel_Itog").forEach(item=>(result=GetXMLNodeContent(item,"ITOG")))
+                           return result     
+                        })(chapters[ind]),
+                        position:((positions)=>{
+                                if (positions) return positions.map(position=>({
+                                        Caption:GetXMLNodeContent(position,"/@NAME"),
+                                        Number:`${GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER1")}${(number2=>(number2!=='0'?
+                                                `,${number2}${(number3=>(number3!=='0'?`,${number3}`:''))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER3"))}`
+                                                :''
+                                        ))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER2"))}`,
+                                        Code:GetXMLNodeContent(position,"/@TAB"),
+                                        Units:GetXMLNodeContent(position,"/@EDIZM_NAME"),
+                                        SlaveRow:GetXMLNodeContent(position,"/@ATYPE")==='18'?"Yes":'',
+                                        Quantity:GetXMLNodeContent(position,"/@KOLL"), 
+                                        TotalWithNP:((CostLevel_Pos=>{
+                                                let result
+                                                CostLevel_Pos.forEach(itog=>(result=GetXMLNodeContent(itog,"ITOGO")))
+                                                return result
+                                        }))(GetXMLNodes(position,"PositionCosts/CostLevel_Pos")),
+                                }
+                        )
+                        )
+                        })(GetXMLNodes(chapters[ind],"Positions/Position"))
+                        }))
+                        
+                }else return []
+
+       /*                  position:((positions)=>{                                
                                 if (positions) return positions.map(position=>({
                                         Caption:position.nodeName==='Position'?GetXMLNodeContent(position,"/@Caption"):undefined,
                                         Header:position.nodeName==='Header'?GetXMLNodeContent(position,"/@Caption"):undefined,
@@ -353,11 +310,17 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
                 }
                 return true
                 
-            }))
-                })
-                )                 
-                })(GetXMLNodes(root,"Chapters/Chapter")),  
-        lz: GetXMLNodes(root,'AddZatrats/AddZatrGlava').map(itm=>(
+            }))*/ 
+                })                
+                (
+                        GetXMLNodes(GetXMLNodes(root,"Object/ObjStructElems/ObjStructElemLS")
+                        .find(item=>(GetXMLNodeContent(item,"/@ID")===smetaid)),"ObjStructElemR"),
+                        GetXMLNodes(GetXMLNodes(root,"Object/StructElems/StructElemLS")
+                        .find(item=>(GetXMLNodeContent(item,"/@ID")===smetaid)),"StructElemR")
+                )
+
+                ,  
+        /*lz: GetXMLNodes(root,'AddZatrats/AddZatrGlava').map(itm=>(
                 GetXMLNodes(itm,'AddZatr').map(lz=>({
                         Glava:GetXMLNodeContent(itm,"/@Glava"),
                         Caption:GetXMLNodeContent(lz,"/@Caption"),
@@ -366,11 +329,11 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
                         Options:GetXMLNodeContent(lz,"/@Options"),
                         Formula:GetXMLNodeContent(lz,"/@Formula")
                 }))
-        )).flat().filter(item=>(!item.Options.includes('Inactive')))
+        )).flat().filter(item=>(!item.Options.includes('Inactive')))*/
     
-    }
+    } 
 
 return result
 }
 
-module.exports = GrandToJSON;
+module.exports = SmetaRuToJSON;

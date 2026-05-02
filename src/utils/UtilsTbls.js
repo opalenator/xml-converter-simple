@@ -62,7 +62,7 @@ const GetContent=(xelement, defval)=>{
         }
             
     }catch(e){
-       //console.log(e)
+       console.log(e)
     }
      return defval
 }

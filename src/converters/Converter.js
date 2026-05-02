@@ -2,6 +2,8 @@ const fs = require('fs-extra');
 const path = require('path');
 const ggeBimToJSON = require('./ggeBimToJSON');
 const GrandToJSON = require('./GrandToJSON');
+const SmetaRuToJSON = require('./SmetaRuToJSON');
+
 const unicodeToWin1251= require('../utils/unicodeToWin1251');
 const iconv = require('iconv-lite');
 class Converter {
@@ -31,6 +33,8 @@ class Converter {
                 JSON.stringify(ggeBimToJSON(parser.parseFromString(xmlContent, "text/xml"),path.parse(xmlPath).name), 'utf-8')
                 :(xmlContent.includes("{2B0470FD-477C-4359-9F34-EEBE36B7D340}"))?
                 JSON.stringify(GrandToJSON(parser.parseFromString(iconv.decode(xmlContent, 'win1251'), "text/xml"),path.parse(xmlPath).name), 'utf-8')
+                :((xmlContent.includes(`Generator="Smeta.RU"`))&&(iconv.decode(xmlContent, 'win1251').includes(`DocumentType="Объект"`)))?
+                JSON.stringify(SmetaRuToJSON(parser.parseFromString(iconv.decode(xmlContent, 'win1251'), "text/xml"),path.parse(xmlPath).name), 'utf-8')
                 :null
             if (!value) throw  "Not LS"
 
