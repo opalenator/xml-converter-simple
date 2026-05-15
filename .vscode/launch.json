@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/index.js",
             "args": [
                 "-x",
-                "input/ЦР.10-11_2108-СМ.ЛС1 Вырубка деревьев.xml",
+                "input/ЛС.1[ЛС.1 Вырубка деревьев Плюс].xml",
                 "-o",
                  "output/result.json",
                 "-v"

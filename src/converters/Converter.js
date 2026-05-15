@@ -29,12 +29,14 @@ class Converter {
             ]);
             var DOMParser = require('xmldom').DOMParser;
             var parser = new DOMParser();
-            var value= (xmlContent.includes("LocalEstimateBaseIndexMethod"))? 
-                JSON.stringify(ggeBimToJSON(parser.parseFromString(xmlContent, "text/xml"),path.parse(xmlPath).name), 'utf-8')
-                :(xmlContent.includes("{2B0470FD-477C-4359-9F34-EEBE36B7D340}"))?
-                JSON.stringify(GrandToJSON(parser.parseFromString(iconv.decode(xmlContent, 'win1251'), "text/xml"),path.parse(xmlPath).name), 'utf-8')
-                :((xmlContent.includes(`Generator="Smeta.RU"`))&&(iconv.decode(xmlContent, 'win1251').includes(`DocumentType="Объект"`)))?
-                JSON.stringify(SmetaRuToJSON(parser.parseFromString(iconv.decode(xmlContent, 'win1251'), "text/xml"),path.parse(xmlPath).name), 'utf-8')
+            var text=iconv.decode(xmlContent, 'win1251')
+            var xml=parser.parseFromString(text)
+            var value= (text.includes("LocalEstimateBaseIndexMethod"))? 
+                JSON.stringify(ggeBimToJSON(xml,path.parse(xmlPath).name), 'utf-8')
+                :text.includes("{2B0470FD-477C-4359-9F34-EEBE36B7D340}")?
+                JSON.stringify(GrandToJSON(xml,path.parse(xmlPath).name), 'utf-8')
+                :((text.includes(`Generator="Smeta.RU"`))&&(text.includes(`DocumentType="Объект"`)))?
+                JSON.stringify(SmetaRuToJSON(xml,path.parse(xmlPath).name), 'utf-8')
                 :null
             if (!value) throw  "Not LS"
 
