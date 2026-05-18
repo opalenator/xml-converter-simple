@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/index.js",
             "args": [
                 "-x",
-                "input/ЛС.1[ЛС.1 Вырубка деревьев Плюс].xml",
+                "input/6_Раздел ПД № 12 СМ12.2 ЛСР-Новая локальная смета.mge",
                 "-o",
                  "output/result.json",
                 "-v"

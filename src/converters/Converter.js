@@ -3,7 +3,7 @@ const path = require('path');
 const ggeBimToJSON = require('./ggeBimToJSON');
 const GrandToJSON = require('./GrandToJSON');
 const SmetaRuToJSON = require('./SmetaRuToJSON');
-
+const mgeToJSON = require('./mgeToJSON');
 const unicodeToWin1251= require('../utils/unicodeToWin1251');
 const iconv = require('iconv-lite');
 class Converter {
@@ -29,14 +29,17 @@ class Converter {
             ]);
             var DOMParser = require('xmldom').DOMParser;
             var parser = new DOMParser();
-            var text=iconv.decode(xmlContent, 'win1251')
+           // var text=iconv.decode(xmlContent, 'win1251')
+            var text = xmlContent.toString('utf8')
             var xml=parser.parseFromString(text)
-            var value= (text.includes("LocalEstimateBaseIndexMethod"))? 
-                JSON.stringify(ggeBimToJSON(xml,path.parse(xmlPath).name), 'utf-8')
+            var value= (text.includes("LocalEstimateBaseIndexMethodMGE"))?
+                JSON.stringify(mgeToJSON(xml,path.parse(xmlPath).name))
+                :(text.includes("LocalEstimateBaseIndexMethod"))? 
+                JSON.stringify(ggeBimToJSON(xml,path.parse(xmlPath).name))
                 :text.includes("{2B0470FD-477C-4359-9F34-EEBE36B7D340}")?
-                JSON.stringify(GrandToJSON(xml,path.parse(xmlPath).name), 'utf-8')
-                :((text.includes(`Generator="Smeta.RU"`))&&(text.includes(`DocumentType="Объект"`)))?
-                JSON.stringify(SmetaRuToJSON(xml,path.parse(xmlPath).name), 'utf-8')
+                JSON.stringify(GrandToJSON(xml,path.parse(xmlPath).name))
+                :((text.includes(`Generator="Smeta.RU"`))&&((text.includes(`DocumentType="Объект"`))||(text.includes(`DocumentType="Локальная смета"`))))?
+                JSON.stringify(SmetaRuToJSON(xml,path.parse(xmlPath).name))
                 :null
             if (!value) throw  "Not LS"
 
