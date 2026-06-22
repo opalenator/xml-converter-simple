@@ -30,7 +30,8 @@ class Converter {
             var DOMParser = require('xmldom').DOMParser;
             var parser = new DOMParser();
            // var text=iconv.decode(xmlContent, 'win1251')
-            var text = xmlContent.toString('utf8')
+            let text = xmlContent.toString('utf8')
+            if (text.includes('encoding="Windows-1251"')) text=iconv.decode(xmlContent, 'win1251')
             var xml=parser.parseFromString(text)
             var value= (text.includes("LocalEstimateBaseIndexMethodMGE"))?
                 JSON.stringify(mgeToJSON(xml,path.parse(xmlPath).name))
@@ -38,7 +39,7 @@ class Converter {
                 JSON.stringify(ggeBimToJSON(xml,path.parse(xmlPath).name))
                 :text.includes("{2B0470FD-477C-4359-9F34-EEBE36B7D340}")?
                 JSON.stringify(GrandToJSON(xml,path.parse(xmlPath).name))
-                :((text.includes(`Generator="Smeta.RU"`))&&((text.includes(`DocumentType="Объект"`))||(text.includes(`DocumentType="Локальная смета"`))))?
+                :((text.includes(`<Document Generator`))&&((text.includes(`DocumentType="Объект"`))||(text.includes(`DocumentType="Локальная смета"`))))?
                 JSON.stringify(SmetaRuToJSON(xml,path.parse(xmlPath).name))
                 :null
             if (!value) throw  "Not LS"

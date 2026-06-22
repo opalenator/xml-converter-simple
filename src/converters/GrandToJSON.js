@@ -338,7 +338,7 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
                                 })
                                                 )                 
                                         }
-                                )(GetXMLNodes(chapter,"Position,Header,Comment") //Комментарии заголовки отключены
+                                )(GetXMLNodes(chapter,"Position,Header,Comment") 
                                 .filter(item=>{
                  
                 if (GetXMLNodeContent(item,"/@Options",'').includes("Inactive")==true){

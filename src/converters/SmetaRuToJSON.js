@@ -2,82 +2,21 @@ const {GetXMLNodeContent, GetXMLNodes} = require('../utils/UtilsTbls');
 const {region_enum} = require('./Dictionary');
 const SmetaRuToJSON =  (xml, filename=undefined)=>{
     let result = {smeta:{},vr:[],index:[]}
-    const root=xml.getElementsByTagName("Document")[0]
+    //const root=xml.getElementsByTagName("Document")[0]
+    const root=xml.documentElement;
     const smetaid= GetXMLNodeContent(root,"Object/ObjStructElems/ObjStructElemLS/@ID")
-/* let inactive=false //Переменная для фильтрации исключённых из расчёта позиций
-   result.vr=GetXMLNodes(root,"VidRab_Catalog/Vids_Rab").flatMap(item=>(
-        GetXMLNodes(item,"VidRab_Group").flatMap(item=>(GetXMLNodes(item,"Vid_Rab").map(itm=>({
-                Grop_Caption:GetXMLNodeContent(item,"/@Caption"),
-                Group_ID:GetXMLNodeContent(item,"/@ID"),
-                Caption:GetXMLNodeContent(itm,"/@Caption"),
-                SourceID:GetXMLNodeContent(itm,"/@ID"),
-                OsColumn:GetXMLNodeContent(itm,"/@OsColumn"),
-                Category:GetXMLNodeContent(itm,"/@Category"),
-                ResGroup:GetXMLNodeContent(itm,"/@ResGroup"),
-                NrCode:GetXMLNodeContent(itm,"/@NrCode"),
-                SpCode:GetXMLNodeContent(itm,"/@SpCode"),
-                Nacl:GetXMLNodeContent(itm,"/@Nacl"),
-                Plan:GetXMLNodeContent(itm,"/@Plan"),
-                NaclCurr:GetXMLNodeContent(itm,"/@NaclCurr"),
-                PlanCurr:GetXMLNodeContent(itm,"/@PlanCurr"),
-                NaclMask:GetXMLNodeContent(itm,"/@NaclMask"),
-                PlanMask:GetXMLNodeContent(itm,"/@PlanMask"),
-                NrKfsCode:GetXMLNodeContent(itm,"/@NrKfsCode"),
-                SpKfsCode:GetXMLNodeContent(itm,"/@SpKfsCode"),
-                NKB:GetXMLNodeContent(itm,"/@NKB"),
-                NKI:GetXMLNodeContent(itm,"/@NKI"),
-                NKR:GetXMLNodeContent(itm,"/@NKR"),
-                PKI:GetXMLNodeContent(itm,"/@PKI"),
-                PKR:GetXMLNodeContent(itm,"/@PKR"),
-                PNB:GetXMLNodeContent(itm,"/@PNB"),
-        }))))
-        
-        ) 
-        )
-   result.index=[
-        ...GetXMLNodes(root,"Indexes/IndexesPos/Index").map(ind=>(        
-        {
-                Type:'Pos',
-                Caption:GetXMLNodeContent(ind,"/@Caption"),
-                Code:GetXMLNodeContent(ind,"/@Code"),
-                OZ:GetXMLNodeContent(ind,"/@OZ"),
-                EM:GetXMLNodeContent(ind,"/@EM"),
-                ZM:GetXMLNodeContent(ind,"/@ZM"),
-                MT:GetXMLNodeContent(ind,"/@MT"),
-                ...Object.assign({},...GetXMLNodes(ind,"IndexesAddOns/AddOn")
-                .map(addon=>((type=>
-                        type==='NR'?
-                        {
-                                NROZ:GetXMLNodeContent(addon,"/@OZ"),
-                                NRZM:GetXMLNodeContent(addon,"/@ZM")
-                        }
-                        :type==='SP'?
-                        {
-                                SPOZ:GetXMLNodeContent(addon,"/@OZ"),
-                                SPZM:GetXMLNodeContent(addon,"/@ZM")
-                        }
-                        :type==='ZU'?
-                        {
-                                ZUOZ:GetXMLNodeContent(addon,"/@OZ"),
-                                ZUEM:GetXMLNodeContent(addon,"/@EM"),
-                                ZUZM:GetXMLNodeContent(addon,"/@ZM"),
-                                ZUMT:GetXMLNodeContent(addon,"/@MT")
-                        }
-                        :undefined)(GetXMLNodeContent(addon,'/@Type'))))) 
-        })),
-        ...GetXMLNodes(root,"Indexes/IndexesRes/Index").map(ind=>(        
-        {
-                Type:'Res',
-                Caption:GetXMLNodeContent(ind,"/@Caption"),
-                Code:GetXMLNodeContent(ind,"/@Code"),
-                OZ:GetXMLNodeContent(ind,"/@OZ"),
-                EM:GetXMLNodeContent(ind,"/@EM"),
-                ZM:GetXMLNodeContent(ind,"/@ZM"),
-                MT:GetXMLNodeContent(ind,"/@MT"),
-                SMR:GetXMLNodeContent(ind,"/@SMR")
-        })),
-]
-const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')*/
+    let costlevels=(GetXMLNodes(root,"Object/Obj_Params/Obj_CostLevels/CostLevel"))
+    .slice(0, 2)
+    const hascompose=costlevels.filter(item=>(GetXMLNodes(item,"Composes")[0].childNodes.length>0))
+    if (hascompose.length>0) costlevels=hascompose
+    const costlevelid=GetXMLNodeContent(costlevels.sort((a, b) => {
+        const nA = Number(GetXMLNodeContent(a,"/@LYEAR"))
+        const nB = Number(GetXMLNodeContent(b,"/@LYEAR"))
+        if (isNaN(nA)) return -1;
+        if (isNaN(nB)) return 1;
+        return nB - nA
+        })[0],'/@ID')
+
    result.smeta={
         FileName:filename,
         Generator:GetXMLNodeContent(root,"/@Generator"),
@@ -95,49 +34,71 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')*/
 
         SmetaTotal:((smeta)=>{
               if (!smeta) return null
-              let result=null
               const itog=GetXMLNodes(smeta,"Itogs/StandartItog").find(item=>(GetXMLNodeContent(item,"/@AVAR")==="Всего"))
               if (!itog) return null
-              GetXMLNodes(itog,"CostLevel_Itog").forEach(item=>(result=GetXMLNodeContent(item,"ITOG")))
-              return result
+              return GetXMLNodeContent(GetXMLNodes(itog,"CostLevel_Itog").find(item=>(GetXMLNodeContent(item,"/@ID")===costlevelid)),"ITOG") 
         })(GetXMLNodes(root,"Object/StructElems/StructElemLS")[0]),
         chapter:((objchapters,chapters)=>{
               if (objchapters){
                  return objchapters.map((objchapter,ind)=>({
                         Caption:GetXMLNodeContent(objchapter,"/@FULLNAME"),
                         ChapterTotal:((chapter)=>{
-                           let result=null
                            const itog=GetXMLNodes(chapter,"Itogs/StandartItog").find(item=>(GetXMLNodeContent(item,"/@AVAR")==="Всего"))
                            if (!itog) return null
-                           GetXMLNodes(itog,"CostLevel_Itog").forEach(item=>(result=GetXMLNodeContent(item,"ITOG")))
-                           return result     
+                           return GetXMLNodeContent(GetXMLNodes(itog,"CostLevel_Itog").find(item=>(GetXMLNodeContent(item,"/@ID")===costlevelid)),"ITOG")    
                         })(chapters[ind]),
-                        position:((positions)=>{
+                        position:[...((positions)=>{
                                 if (positions) return positions.map(position=>({
-                                        Caption:GetXMLNodeContent(position,"/@NAME"),
-                                        Number:`${GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER1")}${(number2=>(number2!=='0'?
+                                        Caption:GetXMLNodeContent(position,"/@ATYPE")!=='19'?GetXMLNodeContent(position,"/@NAME"):undefined,
+                                        Number:GetXMLNodeContent(position,"/@ATYPE")!=='19'?`${GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER1")}${(number2=>(number2!=='0'?
                                                 `,${number2}${(number3=>(number3!=='0'?`,${number3}`:''))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER3"))}`
                                                 :''
-                                        ))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER2"))}`,
+                                        ))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER2"))}`:undefined,
                                         Code:GetXMLNodeContent(position,"/@TAB"),
                                         Units:GetXMLNodeContent(position,"/@EDIZM_NAME"),
+                                        Comment:GetXMLNodeContent(position,"/@ATYPE")==='19'?GetXMLNodeContent(position,"/@NAME"):undefined,
                                         SlaveRow:GetXMLNodeContent(position,"/@ATYPE")==='18'?"Yes":undefined,
                                         Quantity:GetXMLNodeContent(position,"/@KOLL"), 
-                                        TotalWithNP:((CostLevel_Pos=>{
-                                                let result
-                                                CostLevel_Pos.sort((a, b) => {
-                                                                const nA = Number(GetXMLNodeContent(a,"/@LYEAR"))
-                                                                const nB = Number(GetXMLNodeContent(b,"/@LYEAR"))
-                                                                if (isNaN(nA)) return -1;
-                                                                if (isNaN(nB)) return 1;
-                                                                return nA - nB
-                                                            }).forEach(itog=>(result=GetXMLNodeContent(itog,"ITOGO")))
-                                                return result
-                                        }))(GetXMLNodes(position,"PositionCosts/CostLevel_Pos")),
+                                        TotalWithNP:GetXMLNodeContent(GetXMLNodes(position,"PositionCosts/CostLevel_Pos")
+                                        .find(item=>(GetXMLNodeContent(item,"/@ID")===costlevelid)),"ITOGO")
                                 }
                         )
                         )
-                        })(GetXMLNodes(chapters[ind],"Positions/Position"))
+                        })(GetXMLNodes(chapters[ind],"Positions/Position").filter(item=>(GetXMLNodeContent(item,"Obj_Position_Params/VIEW_NUMBER1")!=='-1'))),
+                        ...((objpchapters,pchapters)=>{
+
+                                return objpchapters.map((objpchapter,index)=>(
+                                        [
+                                                {
+                                                        Header:GetXMLNodeContent(objpchapter,"/@FULLNAME")
+                                                },
+                                                ...pchapters[index]?
+                                                GetXMLNodes(pchapters[index],"Positions/Position")
+                                                .filter(item=>(GetXMLNodeContent(item,"Obj_Position_Params/VIEW_NUMBER1")!=='-1'))
+                                                .map(position=>(
+                                                        {
+                                                                Caption:GetXMLNodeContent(position,"/@ATYPE")!=='19'?GetXMLNodeContent(position,"/@NAME"):undefined,
+                                                                Number:GetXMLNodeContent(position,"/@ATYPE")!=='19'?`${GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER1")}${(number2=>(number2!=='0'?
+                                                                 `,${number2}${(number3=>(number3!=='0'?`,${number3}`:''))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER3"))}`
+                                                                        :''
+                                                                ))(GetXMLNodeContent(position,"Obj_Position_Params/VIEW_NUMBER2"))}`:undefined,
+                                                                Code:GetXMLNodeContent(position,"/@TAB"),
+                                                                Units:GetXMLNodeContent(position,"/@EDIZM_NAME"),
+                                                                Comment:GetXMLNodeContent(position,"/@ATYPE")==='19'?GetXMLNodeContent(position,"/@NAME"):undefined,
+                                                                SlaveRow:GetXMLNodeContent(position,"/@ATYPE")==='18'?"Yes":undefined,
+                                                                Quantity:GetXMLNodeContent(position,"/@KOLL"), 
+                                                                TotalWithNP:GetXMLNodeContent(GetXMLNodes(position,"PositionCosts/CostLevel_Pos")
+                                                                .find(item=>(GetXMLNodeContent(item,"/@ID")===costlevelid)),"ITOGO")
+                                                        }
+                                                )):[]
+
+                                        ]
+                                )
+                                ).reduce((acc, val) => acc.concat(val), [])
+                        })(GetXMLNodes(objchapter,"ObjStructElemPR")
+                        ,chapters[ind]?GetXMLNodes(chapters[ind],"StructElemPR"):null)
+                
+                ]
                         }))
                         
                 }else return []
