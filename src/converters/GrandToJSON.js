@@ -187,7 +187,21 @@ const SmetaKoeffs=GetXMLNodes(root,'Koefficients/K')
                                         Number:GetXMLNodeContent(position,"/@Number"),
                                         Code:GetXMLNodeContent(position,"/@Code"),
                                         Units:GetXMLNodeContent(position,"/@Units"),
-                                        UserComment1:GetXMLNodeContent(position,"/@UserComment1"),
+                                        UserComment1:((hyperlinks, calcrows,comment)=>{
+                                                let result=''
+                                                hyperlinks.forEach(item=>{
+                                                        result=`${result} ${GetXMLNodeContent(item,"/@Caption")}\n`})
+                                                calcrows.forEach(item=>{
+                                                        const pos=GetXMLNodeContent(item,"/@LinkedPosNumber")
+                                                        if (pos){
+                                                                const caption=GetXMLNodeContent(item,"/@Caption")
+                                                                const comment=GetXMLNodeContent(item,"/@UserComment1")
+                                                                result=`${result} позиция ВОР ${pos}${(caption)?`, ${caption}`:''}${(comment)?`, ${comment}`:''}\n`
+                                                        }                    
+                                                })
+                                                result=`${result.length>0}${comment?` ${comment}`:undefined}`
+                                                return result
+                                        })(GetXMLNodes(position,"Hyperlinks/Item"),GetXMLNodes(position,"Quantity/CalcRows/Item"),GetXMLNodeContent(position,"/@UserComment1",'')),
                                         UserComment2:GetXMLNodeContent(position,"/@UserComment2"),
                                         PriceLevel:GetXMLNodeContent(position,"/@PriceLevel"),
                                         DBComment:GetXMLNodeContent(position,"/@DBComment"),

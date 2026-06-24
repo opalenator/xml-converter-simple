@@ -12,7 +12,7 @@
             "program": "${workspaceFolder}/index.js",
             "args": [
                 "-x",
-                "input/02-01-19 - ТХ Технологические решения Минус.xml",
+                "input/02-01-03 Железобетонный каркас.xml",
                 "-o",
                  "output/result.json",
                 "-v"
